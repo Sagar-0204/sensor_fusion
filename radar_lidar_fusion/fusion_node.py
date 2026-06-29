@@ -46,8 +46,9 @@ class FusionNode(Node):
         self.get_logger().info('Fusion Node Started (Synchronized)')
 
     def radar_bearing(self, pose):
-        forward  = pose.position.y   # RD-03D y = forward distance
-        lateral  = pose.position.x   # RD-03D x = left/right offset
+        # Radar reports x as lateral offset and y as forward distance.
+        forward  = pose.position.y
+        lateral  = pose.position.x
         return math.degrees(math.atan2(lateral, forward))
 
     def camera_bearing(self, cx):

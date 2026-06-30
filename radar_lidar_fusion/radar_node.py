@@ -123,8 +123,8 @@ class RadarNode(Node):
 
             pose = Pose()
 
-            pose.position.x = x / 1000.0
-            pose.position.y = y / 1000.0
+            pose.position.x = y / 1000.0
+            pose.position.y = x / 1000.0
             pose.position.z = 0.0
 
             # Orientation is currently unused

@@ -22,12 +22,15 @@ class CameraNode(Node):
         # CV Bridge
         self.bridge = CvBridge()
 
+        # Parameters (override with --ros-args -p device_index:=0)
+        device_index = self.declare_parameter('device_index', 8).value
+
         # Open camera
-        self.cap = cv2.VideoCapture(8, cv2.CAP_V4L2)
+        self.cap = cv2.VideoCapture(device_index, cv2.CAP_V4L2)
 
         if not self.cap.isOpened():
             self.get_logger().error(
-                'Failed to open /dev/video8'
+                f'Failed to open /dev/video{device_index}'
             )
             return
 

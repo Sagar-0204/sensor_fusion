@@ -20,17 +20,21 @@ class LidarNode(Node):
             10
         )
 
+        # Parameters (override with --ros-args -p port:=/dev/ttyUSB1)
+        port = self.declare_parameter('port', '/dev/ttyAMA1').value
+        baud = self.declare_parameter('baud', 115200).value
+
         # Open serial port
         try:
 
             self.ser = serial.Serial(
-                '/dev/ttyAMA1',
-                115200,
+                port,
+                baud,
                 timeout=1
             )
 
             self.get_logger().info(
-                'TF-Luna connected on /dev/ttyAMA1'
+                f'TF-Luna connected on {port}'
             )
 
         except Exception as e:

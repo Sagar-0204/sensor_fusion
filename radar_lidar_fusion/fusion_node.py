@@ -64,8 +64,12 @@ class FusionNode(Node):
         return math.degrees(math.atan2(y, x))
 
     def camera_bearing(self, cx):
+        # Image x grows to the RIGHT, but REP-103 bearings are positive to
+        # the LEFT (same as radar_bearing), so the sign is flipped here.
+        # Without the flip, a person on the left of the image gets a
+        # negative angle while the radar reports a positive one.
         pixel_offset = cx - IMAGE_WIDTH / 2.0
-        return (pixel_offset / (IMAGE_WIDTH / 2.0)) * CAMERA_FOV_HALF
+        return -(pixel_offset / (IMAGE_WIDTH / 2.0)) * CAMERA_FOV_HALF
     
     def transform_radar_point(
             self,
@@ -159,14 +163,7 @@ class FusionNode(Node):
 
             )
 
-            bearing = math.degrees(
-
-                math.atan2(
-                    cam_y,
-                    cam_x
-                )
-
-            )
+            bearing = math.degrees(math.atan2(cam_y, cam_x))
             in_fov   = abs(bearing) <= CAMERA_FOV_HALF
 
             print(f"\n  Target {i + 1}")
@@ -305,10 +302,6 @@ def main(args=None):
     finally:
         node.destroy_node()
         rclpy.shutdown()
-
-
-def __name__check():
-    pass
 
 
 if __name__ == '__main__':

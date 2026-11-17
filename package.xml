@@ -1,10 +1,11 @@
+<?xml version="1.0"?>
 <package format="3">
   <name>radar_lidar_fusion</name>
   <version>0.0.0</version>
 
-  <description>Radar and LiDAR sensor fusion package</description>
+  <description>Radar, LiDAR and camera (YOLOv8) fusion for person detection on ROS 2 Jazzy</description>
 
-  <maintainer email="rika@todo.todo">rika</maintainer>
+  <maintainer email="Sagar-0204@users.noreply.github.com">Vidya Sagar Tirandas</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_python</buildtool_depend>
@@ -13,6 +14,13 @@
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>cv_bridge</depend>
+  <depend>vision_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+
+  <exec_depend>python3-serial</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
 
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>

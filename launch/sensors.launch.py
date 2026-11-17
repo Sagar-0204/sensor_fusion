@@ -1,10 +1,32 @@
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-YOLO_PYTHON = "/home/rika/venvs/yolo_env/bin/python3"
+
+def make_yolo_node(context):
+    # Optional: run YOLO with a separate Python interpreter (e.g. a venv
+    # with ultralytics/PyTorch), keeping the system Python lean for ROS 2.
+    #   ros2 launch radar_lidar_fusion sensors.launch.py \
+    #       yolo_python:=$HOME/venvs/yolo_env/bin/python3
+    yolo_python = LaunchConfiguration('yolo_python').perform(context)
+
+    return [Node(
+        package='radar_lidar_fusion',
+        executable='yolo_node',
+        name='yolo_node',
+        output='screen',
+        prefix=(yolo_python + ' ') if yolo_python else None
+    )]
 
 
 def generate_launch_description():
+
+    yolo_python_arg = DeclareLaunchArgument(
+        'yolo_python',
+        default_value='',
+        description='Python interpreter for yolo_node (empty = system Python)'
+    )
 
     # --------------------------------------------------
     # Global TF
@@ -88,13 +110,7 @@ def generate_launch_description():
     # Perception Nodes
     # --------------------------------------------------
 
-    yolo_node = Node(
-        package='radar_lidar_fusion',
-        executable='yolo_node',
-        name='yolo_node',
-        output='screen',
-        prefix=[YOLO_PYTHON + ' ']
-    )
+    yolo_node = OpaqueFunction(function=make_yolo_node)
 
     fusion_node = Node(
         package='radar_lidar_fusion',
@@ -108,6 +124,8 @@ def generate_launch_description():
     # --------------------------------------------------
 
     return LaunchDescription([
+
+        yolo_python_arg,
 
         # TF Tree
         map_to_base,

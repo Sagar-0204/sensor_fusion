@@ -41,12 +41,16 @@ class RadarNode(Node):
             10
         )
 
+        # Parameters (override with --ros-args -p port:=/dev/ttyUSB0)
+        port = self.declare_parameter('port', '/dev/ttyAMA0').value
+        baud = self.declare_parameter('baud', 256000).value
+
         # Open UART
         try:
 
             self.ser = serial.Serial(
-                '/dev/ttyAMA0',
-                256000,
+                port,
+                baud,
                 timeout=1
             )
 
@@ -55,7 +59,7 @@ class RadarNode(Node):
             self.ser.flush()
 
             self.get_logger().info(
-                'RD03D connected on /dev/ttyAMA0'
+                f'RD03D connected on {port}'
             )
 
         except Exception as e:

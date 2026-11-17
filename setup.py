@@ -37,10 +37,10 @@ setup(
 
     zip_safe=True,
 
-    maintainer='rika',
-    maintainer_email='rika@todo.todo',
+    maintainer='Vidya Sagar Tirandas',
+    maintainer_email='Sagar-0204@users.noreply.github.com',
 
-    description='Radar and LiDAR sensor fusion package for ROS 2 Jazzy',
+    description='Radar, LiDAR and camera fusion for person detection on ROS 2 Jazzy',
 
     license='Apache-2.0',
 

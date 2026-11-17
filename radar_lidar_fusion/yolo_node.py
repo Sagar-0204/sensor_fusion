@@ -21,12 +21,14 @@ class YoloNode(Node):
 
         self.bridge = CvBridge()
 
-        # Model
-        self.model_path = "yolov8n.pt"
+        # Model (Ultralytics downloads yolov8n.pt on first run if missing)
+        self.model_path = self.declare_parameter(
+            'model_path', 'yolov8n.pt').value
         self.model = YOLO(self.model_path)
 
         # Confidence threshold
-        self.confidence_threshold = 0.5
+        self.confidence_threshold = self.declare_parameter(
+            'confidence_threshold', 0.5).value
 
         # Prevent multiple simultaneous inferences
         self.processing = False
